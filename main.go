@@ -1,14 +1,15 @@
 package main
 
 import (
-	"github.com/AnotherCoolDude/golang-angular/handlers"
-	"github.com/auth0-community/go-auth0"
-	"github.com/gin-gonic/gin"
-	jose "gopkg.in/square/go-jose.v2"
 	"log"
 	"net/http"
 	"os"
 	"path"
+
+	"github.com/AnotherCoolDude/golang-angular/handlers"
+	"github.com/auth0-community/go-auth0"
+	"github.com/gin-gonic/gin"
+	jose "gopkg.in/square/go-jose.v2"
 )
 
 var (
