@@ -1,19 +1,20 @@
 package main
 
 import (
+	"log"
+	"net/http"
+	"path"
+
 	"github.com/AnotherCoolDude/golang-angular/handlers"
 	"github.com/auth0-community/go-auth0"
 	"github.com/gin-gonic/gin"
 	jose "gopkg.in/square/go-jose.v2"
-	"log"
-	"net/http"
-	//"os"
-	"path"
 )
 
 var (
 	audience string
 	domain   string
+	token    string
 )
 
 func main() {
@@ -54,6 +55,7 @@ func setAuth0Variables() {
 
 func authRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		c.Request.Header.Set("Content-Type", "application/json")
 		var auth0Domain = "https://" + domain + "/"
 		client := auth0.NewJWKClient(auth0.JWKClientOptions{URI: auth0Domain + ".well-known/jwks.json"}, nil)
 		config := auth0.NewConfiguration(client, []string{audience}, auth0Domain, jose.RS256)
