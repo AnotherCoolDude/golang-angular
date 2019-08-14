@@ -7,7 +7,7 @@ import (
 	jose "gopkg.in/square/go-jose.v2"
 	"log"
 	"net/http"
-	"os"
+	//"os"
 	"path"
 )
 
@@ -19,6 +19,8 @@ var (
 func main() {
 	setAuth0Variables()
 	r := gin.Default()
+
+	r.Use(CORSMiddleware())
 
 	r.NoRoute(func(c *gin.Context) {
 		dir, file := path.Split(c.Request.RequestURI)
@@ -46,8 +48,8 @@ func main() {
 }
 
 func setAuth0Variables() {
-	audience = os.Getenv("AUTH0_API_IDENTIFIER")
-	domain = os.Getenv("AUTH0_DOMAIN")
+	audience = "https://my-golang-api"   //os.Getenv("AUTH0_API_IDENTIFIER")
+	domain = "dev-3tt1ae45.eu.auth0.com" //os.Getenv("AUTH0_DOMAIN")
 }
 
 func authRequired() gin.HandlerFunc {
@@ -61,6 +63,7 @@ func authRequired() gin.HandlerFunc {
 
 		if err != nil {
 			log.Println(err)
+			log.Println(c.Request)
 			terminateWithError(http.StatusUnauthorized, "token is not valid", c)
 			return
 		}
@@ -72,4 +75,20 @@ func authRequired() gin.HandlerFunc {
 func terminateWithError(statusCode int, message string, c *gin.Context) {
 	c.JSON(statusCode, gin.H{"error": message})
 	c.Abort()
+}
+
+// CORSMiddleware writes restrictions to the request header
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "DELETE, GET, OPTIONS, POST, PUT")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
 }
