@@ -26,7 +26,7 @@ export class TodoComponent implements OnInit {
   }
 
   addTodo() {
-    var newTodo : Todo = {
+    const newTodo: Todo = {
       message: this.todoMessage,
       id: '',
       complete: false
@@ -47,6 +47,6 @@ export class TodoComponent implements OnInit {
   deleteTodo(todo: Todo) {
     this.todoService.deleteTodo(todo).subscribe(() => {
       this.getAll();
-    })
+    });
   }
 }
