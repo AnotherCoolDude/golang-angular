@@ -10,9 +10,9 @@ import * as auth0 from 'auth0-js';
 export class AuthService {
   constructor(public router: Router)  {}
 
-  access_token: string;
-  id_token: string;
-  expires_at: string;
+  accessToken: string;
+  idToken: string;
+  expiresAt: string;
 
   auth0 = new auth0.WebAuth({
     clientID: environment.clientId,
@@ -29,7 +29,7 @@ export class AuthService {
 
   public handleAuthentication(): void {
     this.auth0.parseHash((err, authResult) => {
-      if (err) console.log(err);
+      if (err) { console.log(err); }
       if (!err && authResult && authResult.accessToken && authResult.idToken) {
         window.location.hash = '';
         this.setSession(authResult);
@@ -41,15 +41,15 @@ export class AuthService {
   private setSession(authResult): void {
     // Set the time that the Access Token will expire at
     const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
-    this.access_token = authResult.accessToken;
-    this.id_token = authResult.idToken;
-    this.expires_at = expiresAt;
+    this.accessToken = authResult.accessToken;
+    this.idToken = authResult.idToken;
+    this.expiresAt = expiresAt;
   }
 
   public logout(): void {
-    this.access_token = null;
-    this.id_token = null;
-    this.expires_at = null;
+    this.accessToken = null;
+    this.idToken = null;
+    this.expiresAt = null;
     // Go back to the home route
     this.router.navigate(['/']);
   }
@@ -57,11 +57,11 @@ export class AuthService {
   public isAuthenticated(): boolean {
     // Check whether the current time is past the
     // Access Token's expiry time
-    const expiresAt = JSON.parse(this.expires_at || '{}');
+    const expiresAt = JSON.parse(this.expiresAt || '{}');
     return new Date().getTime() < expiresAt;
   }
 
   public createAuthHeaderValue(): string {
-    return 'Bearer ' + this.access_token;
+    return 'Bearer ' + this.accessToken;
   }
 }

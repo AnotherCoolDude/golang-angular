@@ -21,17 +21,17 @@ import { TokenInterceptor } from './token.interceptor';
     TodoComponent,
     CallbackComponent
   ],
-	imports: [
-		AppRoutingModule,
-		BrowserModule,
-		FormsModule,
-		HttpClientModule
+    imports: [
+        AppRoutingModule,
+        BrowserModule,
+        FormsModule,
+        HttpClientModule
   ],
-	providers: [{
-		provide: HTTP_INTERCEPTORS,
-		useClass: TokenInterceptor,
-		multi: true
-		}],
+    providers: [{
+        provide: HTTP_INTERCEPTORS,
+        useClass: TokenInterceptor,
+        multi: true
+       }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
