@@ -5,8 +5,8 @@ export const environment = {
   production: false,
   gateway: 'http://localhost:3000',
   callback: 'http://localhost:4200/callback',
-  domain: 'dev-3tt1ae45.eu.auth0.com',
-  clientId: 'iZc1YVGLe6v3f1jO3LlVJ23cXJ19OgJY',
+  domain: 'XXX',
+  clientId: 'XXX',
   audience: 'https://my-golang-api'
 };
 
